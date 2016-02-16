@@ -13,6 +13,12 @@ module.exports = function(context) {
 				return;
 			}
 
+			var firstArg = node.arguments[0];
+			if (firstArg.type === 'Literal' && firstArg.value !== null) {
+				// probably $.fn.bind or something else
+				return;
+			}
+
 			if (node.callee.type !== 'MemberExpression') {
 				return;
 			}

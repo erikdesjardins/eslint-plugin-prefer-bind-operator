@@ -34,7 +34,10 @@ ruleTester.run('prefer-bind-operator', rule, {
 		// bare Reflect.apply
 		'Reflect.apply',
 		// too few arguments
-		'Reflect.apply()'
+		'Reflect.apply()',
+		// binding `this` to a literal, probably not a Function.prototype method call
+		'a.apply("foo"); a.call("foo"); a.bind("foo");',
+		'a.apply(4); a.call(5); a.bind(1);'
 	],
 	invalid: [
 		// apply
@@ -57,6 +60,16 @@ ruleTester.run('prefer-bind-operator', rule, {
 				column: 5
 			}]
 		},
+		// apply, this = null
+		{
+			code: 'a.apply(null);',
+			errors: [{
+				message: callMessage,
+				type: 'Identifier',
+				line: 1,
+				column: 3
+			}]
+		},
 		// call
 		{
 			code: 'a.call(foo);',
@@ -75,6 +88,16 @@ ruleTester.run('prefer-bind-operator', rule, {
 				type: 'Identifier',
 				line: 1,
 				column: 5
+			}]
+		},
+		// call, this = null
+		{
+			code: 'a.call(null);',
+			errors: [{
+				message: callMessage,
+				type: 'Identifier',
+				line: 1,
+				column: 3
 			}]
 		},
 		// bind
@@ -97,6 +120,16 @@ ruleTester.run('prefer-bind-operator', rule, {
 				column: 5
 			}]
 		},
+		// bind, this = null
+		{
+			code: 'a.bind(null);',
+			errors: [{
+				message: bindMessage,
+				type: 'Identifier',
+				line: 1,
+				column: 3
+			}]
+		},
 		// Reflect.apply
 		{
 			code: 'Reflect.apply(foo);',
@@ -110,6 +143,16 @@ ruleTester.run('prefer-bind-operator', rule, {
 		// Reflect.apply, multiple args
 		{
 			code: 'Reflect.apply(foo.bar, baz);',
+			errors: [{
+				message: callMessage,
+				type: 'Identifier',
+				line: 1,
+				column: 9
+			}]
+		},
+		// Reflect.apply, this = null
+		{
+			code: 'Reflect.apply(foo, null);',
 			errors: [{
 				message: callMessage,
 				type: 'Identifier',
