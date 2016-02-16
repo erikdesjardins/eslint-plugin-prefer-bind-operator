@@ -6,11 +6,11 @@
  */
 'use strict';
 
-var rule = require('../rules/plugin-prefer-bind-operator');
+var rule = require('../rules/prefer-bind-operator');
 var RuleTester = require('eslint').RuleTester;
 
 var ruleTester = new RuleTester();
-ruleTester.run('plugin-prefer-bind-operator', rule, {
+ruleTester.run('prefer-bind-operator', rule, {
 	valid: [
 		// variables
 		'var apply; var call; var bind;',
