@@ -9,6 +9,9 @@
 var rule = require('../rules/prefer-bind-operator');
 var RuleTester = require('eslint').RuleTester;
 
+var bindMessage = 'Expected bind operator or arrow function.';
+var callMessage = 'Expected bind operator.';
+
 var ruleTester = new RuleTester();
 ruleTester.run('prefer-bind-operator', rule, {
 	valid: [
@@ -27,8 +30,92 @@ ruleTester.run('prefer-bind-operator', rule, {
 		// bare function calls with arguments
 		'apply(foo); call(foo); bind(foo);',
 		// bare function calls, multiple arguments
-		'apply(foo, bar); call(foo, bar); bind(foo, bar);'
+		'apply(foo, bar); call(foo, bar); bind(foo, bar);',
+		// bare Reflect.apply
+		'Reflect.apply',
+		// too few arguments
+		'Reflect.apply()'
 	],
 	invalid: [
+		// apply
+		{
+			code: 'a.apply(foo);',
+			errors: [{
+				message: callMessage,
+				type: 'Identifier',
+				line: 1,
+				column: 3
+			}]
+		},
+		// apply, multiple args and deep property access
+		{
+			code: 'a.b.apply(foo, bar);',
+			errors: [{
+				message: callMessage,
+				type: 'Identifier',
+				line: 1,
+				column: 5
+			}]
+		},
+		// call
+		{
+			code: 'a.call(foo);',
+			errors: [{
+				message: callMessage,
+				type: 'Identifier',
+				line: 1,
+				column: 3
+			}]
+		},
+		// call, multiple args and deep property access
+		{
+			code: 'a.b.call(foo, bar);',
+			errors: [{
+				message: callMessage,
+				type: 'Identifier',
+				line: 1,
+				column: 5
+			}]
+		},
+		// bind
+		{
+			code: 'a.bind(foo);',
+			errors: [{
+				message: bindMessage,
+				type: 'Identifier',
+				line: 1,
+				column: 3
+			}]
+		},
+		// bind, multiple args and deep property access
+		{
+			code: 'a.b.bind(foo, bar);',
+			errors: [{
+				message: bindMessage,
+				type: 'Identifier',
+				line: 1,
+				column: 5
+			}]
+		},
+		// Reflect.apply
+		{
+			code: 'Reflect.apply(foo);',
+			errors: [{
+				message: callMessage,
+				type: 'Identifier',
+				line: 1,
+				column: 9
+			}]
+		},
+		// Reflect.apply, multiple args
+		{
+			code: 'Reflect.apply(foo.bar, baz);',
+			errors: [{
+				message: callMessage,
+				type: 'Identifier',
+				line: 1,
+				column: 9
+			}]
+		}
 	]
 });
