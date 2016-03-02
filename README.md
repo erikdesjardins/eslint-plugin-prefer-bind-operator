@@ -12,6 +12,8 @@ foo.apply(/* ... */);
 Reflect.apply(foo);
 ```
 
+## Usage
+
 `npm i --save-dev eslint-plugin-prefer-bind-operator`
 
 ```json
