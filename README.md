@@ -18,11 +18,11 @@ Reflect.apply(foo);
 
 ```json
 {
-	"plugins": [
-		"prefer-bind-operator"
-	],
-	"rules": {
-		"prefer-bind-operator/prefer-bind-operator": 2
-	}
+  "plugins": [
+    "prefer-bind-operator"
+  ],
+  "rules": {
+    "prefer-bind-operator/prefer-bind-operator": 2
+  }
 }
 ```
