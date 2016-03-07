@@ -1,6 +1,6 @@
 {
   "name": "eslint-plugin-prefer-bind-operator",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Suggest using the bind operator over Function methods or Reflect.apply.",
   "keywords": [
     "eslint",
